@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department of Information Technology - Vertex University</title>
+    <style>
+        /* =========================================
+           COLOR PALETTE & DESIGN TOKENS
+           =========================================
+           Navy Blue (Primary): #0f172a / #1e293b
+           Gold (Accent):       #d97706 / #f59e0b
+           Neutral Light:       #f8fafc / #f1f5f9
+           Text Dark:           #334155
+        */
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #d97706;
+            --accent-hover: #b45309;
+            --text-dark: #334155;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background-color: var(--primary);
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-top {
+            background-color: #020617;
+            padding: 0.5rem 5%;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-top-links a {
+            margin-left: 1.5rem;
+            color: #cbd5e1;
+            transition: var(--transition-smooth);
+        }
+
+        .header-top-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background-color: var(--accent);
+            color: var(--primary);
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text span {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            display: block;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            display: block;
+            color: #f1f5f9;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: var(--accent);
+        }
+
+        /* Underline slider effect */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover::after, .nav-item.active .nav-link::after {
+            width: 100%;
+        }
+
+        /* Dropdown styling */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--primary-light);
+            min-width: 220px;
+            border-radius: 4px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition-smooth);
+            list-style: none;
+            padding: 0.5rem 0;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            transition: var(--transition-smooth);
+        }
+
+        .dropdown-item a:hover {
+            background-color: var(--primary);
+            color: var(--accent);
+            padding-left: 1.75rem;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: var(--transition-smooth);
+        }
+
+        /* Page Layout Views (Interactive Router Simulation) */
+        .page-view {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .page-view.active-view {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dynamic Image Carousel Slider */
+        .carousel-section {
+            position: relative;
+            height: 500px;
+            background-color: #020617;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 10%;
+        }
+
+        .carousel-slide.slide-active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* SVG Procedural Background Framework for Placeholders */
+        .carousel-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.8) 40%, rgba(2,6,23,0.2) 100%);
+            z-index: 2;
+        }
+
+        .carousel-content {
+            position: relative;
+            z-index: 3;
+            max-width: 650px;
+            color: #ffffff;
+        }
+
+        .carousel-tag {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        .carousel-title {
+            font-size: 2.75rem;
+            line-height: 1.2;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-desc {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--primary);
+            padding: 0.85rem 1.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+        }
+
+        /* Carousel Navigation Buttons */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 15;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #ffffff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .carousel-arrow:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .carousel-prev { left: 2%; }
+        .carousel-next { right: 2%; }
+
+        /* General Section Structure */
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title-wrap {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent);
+            margin: 0.75rem auto 0 auto;
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Course Directory Grid layout */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: #cbd5e1;
+        }
+
+        .course-image-placeholder {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #020617 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 3.5rem;
+        }
+
+        .course-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .course-meta {
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .course-desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .course-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Faculty Directory Styling (About Page View) */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .faculty-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-smooth);
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            font-size: 2.25rem;
+            font-weight: bold;
+            border: 3px solid var(--border-color);
+        }
+
+        .faculty-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .faculty-title {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .faculty-specialty {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Contact Section */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .contact-info-panel {
+            background-color: var(--primary);
+            color: #ffffff;
+            padding: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-info-panel h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--accent);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-form-panel {
+            padding: 3.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+        }
+
+        /* Form Feedback Messaging System */
+        .feedback-msg {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-size: 0.95rem;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .feedback-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            display: block;
+        }
+
+        .feedback-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #020617;
+            color: #ffffff;
+            padding: 4rem 5% 2rem 5%;
+            margin-top: 5rem;
+            border-top: 4px solid var(--accent);
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-about h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #ffffff;
+        }
+
+        .footer-about p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        /* Responsive Layout Overrides */
+        @media (max-width: 1024px) {
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: var(--shadow-lg);
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            }
+
+            .nav-menu.mobile-active {
+                max-height: 500px;
+                opacity: 1;
+            }
+
+            .nav-item {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-link {
+                padding: 1rem;
+            }
+
+            .dropdown {
+                position: static;
+                transform: none;
+                opacity: 1;
+                visibility: visible;
+                box-shadow: none;
+                background-color: rgba(255,255,255,0.05);
+                display: none;
+            }
+
+            .nav-item:hover .dropdown {
+                display: block;
+            }
+
+            .carousel-section {
+                height: 450px;
+            }
+
+            .carousel-title {
+                font-size: 2rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Upper Utility Header Row -->
+    <div class="header-top">
+        <div>📍 Campus Center, Building A, Suite 300</div>
+        <div class="header-top-links">
+            <a href="#">Portals</a>
+            <a href="#">Support</a>
+            <a href="#">Quick Links</a>
+        </div>
+    </div>
+
+    <!-- Main Global Navigation Bar -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo-area" data-target="home-view">
+                <div class="logo-icon">V</div>
+                <div class="logo-text">
+                    <h1>VERTEX</h1>
+                    <span>Information Technology</span>
+                </div>
+            </a>
+            
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item active" data-target="home-view"><a href="#" class="nav-link">Home</a></li>
+                <li class="nav-item" data-target="courses-view"><a href="#" class="nav-link">Programs</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Department info</a>
+                    <ul class="dropdown">
+                        <li class="dropdown-item" data-target="about-view"><a href="#">Faculty Directory</a></li>
+                        <li class="dropdown-item" data-target="about-view"><a href="#">Our Research</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" data-target="contact-view"><a href="#" class="nav-link">Admissions</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- =========================================
+         PAGE VIEW 1: HOME PAGE
+         ========================================= -->
+    <main class="page-view active-view" id="home-view">
+        <!-- Interactive Carousel / Image Slider -->
+        <section class="carousel-section">
+            <div class="carousel-track" id="carousel-track">
+                
+                <!-- Slide 1 -->
+                <div class="carousel-slide slide-active">
+                    <svg class="carousel-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600">
+                        <defs>
+                            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#0f172a"/>
+                                <stop offset="100%" stop-color="#3b82f6"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#g1)"/>
+                        <circle cx="900" cy="300" r="250" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20"/>
+                        <circle cx="900" cy="300" r="150" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
+                    </svg>
+                    <div class="carousel-overlay"></div>
+                    <div class="carousel-content">
+                        <span class="carousel-tag">Featured Program</span>
+                        <h2 class="carousel-title">Advanced Software Engineering Pathways</h2>
+                        <p class="carousel-desc">Shape the software solutions of tomorrow. Dive deep into robust computer science theory and modern cloud architectures.</p>
+                        <button class="cta-btn view-nav-trigger" data-target="courses-view">Explore Courses</button>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <svg class="carousel-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600">
+                        <defs>
+                            <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#1e1b4b"/>
+                                <stop offset="100%" stop-color="#818cf8"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#g2)"/>
+                        <line x1="600" y1="0" x2="1200" y2="600" stroke="rgba(255,255,255,0.05)" stroke-width="5" />
+                        <line x1="800" y1="0" x2="1200" y2="400" stroke="rgba(255,255,255,0.05)" stroke-width="2" />
+                    </svg>
+                    <div class="carousel-overlay"></div>
+                    <div class="carousel-content">
+                        <span class="carousel-tag">Cutting-Edge Research</span>
+                        <h2 class="carousel-title">Securing Enterprise Network Architectures</h2>
+                        <p class="carousel-desc">Lead the front against complex digital vulnerabilities. Learn advanced cybersecurity and threat-monitoring systems from experts.</p>
+                        <button class="cta-btn view-nav-trigger" data-target="courses-view">Discover Research</button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <button class="carousel-arrow carousel-prev" id="carousel-prev" aria-label="Previous Slide">‹</button>
+            <button class="carousel-arrow carousel-next" id="carousel-next" aria-label="Next Slide">›</button>
+        </section>
+
+        <!-- Department Overview Highlights -->
+        <section class="section-container">
+            <div class="section-title-wrap">
+                <h2 class="section-title">Academic Excellence in Computing</h2>
+                <p class="section-subtitle">Pioneering standard-compliant, future-focused programs built to power technological solutions.</p>
+            </div>
+
+            <!-- Mini Preview of Key Specialties -->
+            <div class="course-grid">
+                <!-- Academic Card 1 -->
+                <div class="course-card">
+                    <div class="course-image-placeholder">💻</div>
+                    <div class="course-body">
+                        <span class="course-meta">B.S. Track</span>
+                        <h3 class="course-title">Computing & Software Engineering</h3>
+                        <p class="course-desc">Master the methodologies of robust design patterns, agile software practices, and high-performance system execution.</p>
+                        <div class="course-footer">
+                            <span>⏱️ 4-Year Program</span>
+                            <span>📍 Main Campus</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Card 2 -->
+                <div class="course-card">
+                    <div class="course-image-placeholder">🛡️</div>
+                    <div class="course-body">
+                        <span class="course-meta">Specialist Track</span>
+                        <h3 class="course-title">Information Security & Operations</h3>
+                        <p class="course-desc">A deep architectural dive into protecting modern networks, digital systems, cryptographic configurations, and key systems.</p>
+                        <div class="course-footer">
+                            <span>⏱️ 4-Year Program</span>
+                            <span>📍 Hybrid Delivery</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Card 3 -->
+                <div class="course-card">
+                    <div class="course-image-placeholder">🌐</div>
+                    <div class="course-body">
+                        <span class="course-meta">B.S. Track</span>
+                        <h3 class="course-title">Full Stack Cloud Applications</h3>
+                        <p class="course-desc">An industry-aligned curriculum covering modern client-side architectures, server-side design, and dynamic database integrations.</p>
+                        <div class="course-footer">
+                            <span>⏱️ 4-Year Program</span>
+                            <span>📍 Main Campus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =========================================
+         PAGE VIEW 2: PROGRAMS DIRECTORY
+         ========================================= -->
+    <section class="page-view" id="courses-view">
+        <div class="section-container">
+            <div class="section-title-wrap">
+                <h2 class="section-title">Computing Curriculum Index</h2>
+                <p class="section-subtitle">View and search our course offerings for the current academic session.</p>
+            </div>
+
+            <div class="course-grid">
+                <!-- Program 1 -->
+                <div class="course-card">
+                    <div class="course-image-placeholder">💾</div>
+                    <div class="course-body">
+                        <span class="course-meta">Systems Core</span>
+                        <h3 class="course-title">Advanced Data Structures</h3>
+                        <p class="course-desc">Practical implementation of binary structures, graph theories, complex search paradigms, and algorithm complexity evaluations.</p>
+                        <div class="course-footer">
+                            <span>Course ID: CS301</span>
+                            <span>Credits: 4.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="course-card">
+                    <div class="course-image-placeholder">📡</div>
+                    <div class="course-body">
+                        <span class="course-meta">Networking Core</span>
+                        <h3 class="course-title">Cloud Architecture & Systems</h3>
+                        <p class="course-desc">Infrastructure configuration across public providers, focusing on container virtualization, scale metrics, and secure routing.</p>
+                        <div class="course-footer">
+                            <span>Course ID: CS340</span>
+                            <span>Credits: 4.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program 3 -->
+                <div class="course-card">
+                    <div class="course-image-placeholder">🗄️</div>
+                    <div class="course-body">
+                        <span class="course-meta">Data Core</span>
+                        <h3 class="course-title">Database Administration</h3>
+                        <p class="course-desc">Structured query language indexing, database engine architecture, query optimization, security access control, and transactions.</p>
+                        <div class="course-footer">
+                            <span>Course ID: CS402</span>
+                            <span>Credits: 3.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================
+         PAGE VIEW 3: FACULTY & ABOUT DIRECTORY
+         ========================================= -->
+    <section class="page-view" id="about-view">
+        <div class="section-container">
+            <div class="section-title-wrap">
+                <h2 class="section-title">Department Faculty</h2>
+                <p class="section-subtitle">Meet our award-winning academic mentors, researchers, and technical industry experts.</p>
+            </div>
+
+            <div class="faculty-grid">
+                <!-- Faculty Member 1 -->
+                <div class="faculty-card">
+                    <div class="avatar-placeholder">AL</div>
+                    <h3 class="faculty-name">Dr. Alan Lovelace</h3>
+                    <p class="faculty-title">Department Head</p>
+                    <p class="faculty-specialty">Core Theory of Computing, Cryptographic Systems</p>
+                </div>
+
+                <!-- Faculty Member 2 -->
+                <div class="faculty-card">
+                    <div class="avatar-placeholder">GH</div>
+                    <h3 class="faculty-name">Prof. Grace Hopper</h3>
+                    <p class="faculty-title">Senior Professor</p>
+                    <p class="faculty-specialty">Compiler Optimization, Language Architectures</p>
+                </div>
+
+                <!-- Faculty Member 3 -->
+                <div class="faculty-card">
+                    <div class="avatar-placeholder">KT</div>
+                    <h3 class="faculty-name">Dr. Ken Thompson</h3>
+                    <p class="faculty-title">Associate Professor</p>
+                    <p class="faculty-specialty">Distributed Network Architecture, System Shells</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================
+         PAGE VIEW 4: REGISTRATION & ADMISSIONS (CONTACT)
+         ========================================= -->
+    <section class="page-view" id="contact-view">
+        <div class="section-container">
+            <div class="section-title-wrap">
+                <h2 class="section-title">Admissions Registry Inquiry</h2>
+                <p class="section-subtitle">Get in touch directly with our administrative registrars to request materials.</p>
+            </div>
+
+            <div class="contact-layout">
+                <div class="contact-info-panel">
+                    <div>
+                        <h3>Vertex Registrar</h3>
+                        <p>Submit your academic profile query, or contact us during active campus office hours.</p>
+                    </div>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div>
+                                <small style="display:block; color:#94a3b8">Registrar Desk</small>
+                                <strong>+1 (555) 123-0987</strong>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">✉️</div>
+                            <div>
+                                <small style="display:block; color:#94a3b8">Department Inbox</small>
+                                <strong>itdept@vertex.edu</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p style="font-size: 0.85rem; color: #94a3b8">© Vertex University Registrar Office, Room 310.</p>
+                    </div>
+                </div>
+
+                <div class="contact-form-panel">
+                    <!-- Client-Side Validated Contact Form -->
+                    <div id="form-feedback" class="feedback-msg"></div>
+
+                    <form id="registrar-inquiry-form" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="applicant-name">Applicant Full Name *</label>
+                            <input type="text" id="applicant-name" class="form-control" placeholder="Jane Doe" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="applicant-email">Institutional Email Address *</label>
+                            <input type="email" id="applicant-email" class="form-control" placeholder="jane.doe@vertex.edu" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="inquiry-track">Academic Program Track of Interest *</label>
+                            <select id="inquiry-track" class="form-control" required>
+                                <option value="" disabled selected>-- Select Program --</option>
+                                <option value="se">Computing & Software Engineering (B.S.)</option>
+                                <option value="sec">Information Security & Operations (B.S.)</option>
+                                <option value="cloud">Full Stack Cloud Applications (Specialist)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="inquiry-message">Brief Inquiry Overview *</label>
+                            <textarea id="inquiry-message" class="form-control" rows="4" placeholder="Briefly describe your goals..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="cta-btn" style="width: 100%">Submit Registrant Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Layout Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <h4>Vertex University IT</h4>
+                <p>Delivering premier computer science education and technical leadership since 1998.</p>
+                <p>Standardized modern frontend code portfolio piece demonstrating structure, semantic layout, and interactivity.</p>
+            </div>
+            <div class="footer-links">
+                <h5>Our Curriculums</h5>
+                <ul>
+                    <li class="view-nav-trigger" data-target="courses-view"><a href="#">Course Catalog</a></li>
+                    <li class="view-nav-trigger" data-target="courses-view"><a href="#">Security Systems</a></li>
+                    <li class="view-nav-trigger" data-target="courses-view"><a href="#">Cloud Pipelines</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h5>Resources</h5>
+                <ul>
+                    <li class="view-nav-trigger" data-target="about-view"><a href="#">Research Output</a></li>
+                    <li><a href="#">Academic Calendar</a></li>
+                    <li><a href="#">Faculty Portal</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h5>Support Channels</h5>
+                <ul>
+                    <li class="view-nav-trigger" data-target="contact-view"><a href="#">Registrar Desk</a></li>
+                    <li><a href="#">Campus Help Desk</a></li>
+                    <li><a href="#">Library Systems</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Vertex University Department of IT. All rights reserved.</p>
+            <p>Designed and programmed with vanilla HTML/CSS/JS</p>
+        </div>
+    </footer>
+
+    <!-- =========================================
+         VANILLA JAVASCRIPT SYSTEM CONTROLLERS
+         ========================================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // ----------------------------------------------------------------
+            // 1. DYNAMIC NAVIGATION VIEW SWITCHER (VANILLA ROUTER SIMULATION)
+            // ----------------------------------------------------------------
+            const navItems = document.querySelectorAll('[data-target]');
+            const pageViews = document.querySelectorAll('.page-view');
+            const mobileMenu = document.getElementById('nav-menu');
+            const mobileToggle = document.getElementById('mobile-toggle');
+
+            function switchView(targetViewId) {
+                // Remove active classes from all nav items
+                navItems.forEach(item => {
+                    if(item.getAttribute('data-target') === targetViewId) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // Deactivate all page views and active the target view
+                pageViews.forEach(view => {
+                    if (view.id === targetViewId) {
+                        view.classList.add('active-view');
+                    } else {
+                        view.classList.remove('active-view');
+                    }
+                });
+
+                // Scroll view smoothly back to top of document context
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Auto collapse mobile menu drawer if active
+                if (mobileMenu.classList.contains('mobile-active')) {
+                    mobileMenu.classList.remove('mobile-active');
+                }
+            }
+
+            // Bind click events to elements with data-target attributes
+            document.body.addEventListener('click', (e) => {
+                const trigger = e.target.closest('[data-target]');
+                if (trigger) {
+                    e.preventDefault();
+                    const targetId = trigger.getAttribute('data-target');
+                    switchView(targetId);
+                }
+            });
+
+            // ----------------------------------------------------------------
+            // 2. MOBILE MENU DRAWER CONTROLLER
+            // ----------------------------------------------------------------
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('mobile-active');
+                });
+            }
+
+            // ----------------------------------------------------------------
+            // 3. HOME VIEW: HERO INTERACTIVE IMAGE CAROUSEL
+            // ----------------------------------------------------------------
+            const slides = document.querySelectorAll('.carousel-slide');
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            let currentSlideIndex = 0;
+            let slideIntervalTimer = null;
+
+            function updateCarousel(nextIndex) {
+                // Boundary validations
+                if (nextIndex >= slides.length) {
+                    currentSlideIndex = 0;
+                } else if (nextIndex < 0) {
+                    currentSlideIndex = slides.length - 1;
+                } else {
+                    currentSlideIndex = nextIndex;
+                }
+
+                // Adjust active class states
+                slides.forEach((slide, idx) => {
+                    if (idx === currentSlideIndex) {
+                        slide.classList.add('slide-active');
+                    } else {
+                        slide.classList.remove('slide-active');
+                    }
+                });
+            }
+
+            function startSlideInterval() {
+                stopSlideInterval();
+                slideIntervalTimer = setInterval(() => {
+                    updateCarousel(currentSlideIndex + 1);
+                }, 6000); // Transitions automatically every 6 seconds
+            }
+
+            function stopSlideInterval() {
+                if (slideIntervalTimer) {
+                    clearInterval(slideIntervalTimer);
+                }
+            }
+
+            if (prevBtn && nextBtn) {
+                prevBtn.addEventListener('click', () => {
+                    updateCarousel(currentSlideIndex - 1);
+                    startSlideInterval(); // Reset auto rotation interval
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    updateCarousel(currentSlideIndex + 1);
+                    startSlideInterval(); // Reset auto rotation interval
+                });
+
+                // Initialize automated loop
+                startSlideInterval();
+            }
+
+            // ----------------------------------------------------------------
+            // 4. REGISTRAR ADMISSIONS FORM: HIGH-VAL ADVANCED FORM VALIDATOR
+            // ----------------------------------------------------------------
+            const registrarForm = document.getElementById('registrar-inquiry-form');
+            const feedbackContainer = document.getElementById('form-feedback');
+
+            if (registrarForm) {
+                registrarForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // Retrieve DOM values
+                    const inputName = document.getElementById('applicant-name');
+                    const inputEmail = document.getElementById('applicant-email');
+                    const inputTrack = document.getElementById('inquiry-track');
+                    const inputMessage = document.getElementById('inquiry-message');
+
+                    let validationErrors = [];
+
+                    // Explicit Client Field Validation Checks
+                    if (inputName.value.trim().length < 3) {
+                        validationErrors.push("Applicant Name must be at least 3 characters.");
+                        inputName.style.borderColor = "red";
+                    } else {
+                        inputName.style.borderColor = "";
+                    }
+
+                    // Email Regex Verification
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(inputEmail.value.trim())) {
+                        validationErrors.push("Please provide a valid institutional email address.");
+                        inputEmail.style.borderColor = "red";
+                    } else {
+                        inputEmail.style.borderColor = "";
+                    }
+
+                    if (!inputTrack.value) {
+                        validationErrors.push("Please select an academic program track of interest.");
+                        inputTrack.style.borderColor = "red";
+                    } else {
+                        inputTrack.style.borderColor = "";
+                    }
+
+                    if (inputMessage.value.trim().length < 15) {
+                        validationErrors.push("Please write a brief message of at least 15 characters.");
+                        inputMessage.style.borderColor = "red";
+                    } else {
+                        inputMessage.style.borderColor = "";
+                    }
+
+                    // Render validation feedback responses
+                    feedbackContainer.className = "feedback-msg"; // Reset styles
+
+                    if (validationErrors.length > 0) {
+                        feedbackContainer.innerHTML = `<strong>Submission Failed:</strong><br>${validationErrors.join('<br>')}`;
+                        feedbackContainer.classList.add('feedback-error');
+                    } else {
+                        feedbackContainer.innerHTML = `<strong>Registrar inquiry successfully sent!</strong><br>Thank you ${inputName.value}. An academic advisor will reach out to you within 2 business days.`;
+                        feedbackContainer.classList.add('feedback-success');
+
+                        // Reset target form fields completely
+                        registrarForm.reset();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
